@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Post;
 use App\Category;
 use App\Tag;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -18,6 +19,10 @@ class PostController extends Controller
      */
     public function index()
     {
+
+
+        
+
         $posts = Post::all(); //recupero i miei post dal mio database
         return view('admin.post.index', compact('posts'));
     }
@@ -97,7 +102,15 @@ class PostController extends Controller
      */
     public function show(Post $post) //<- Dependency injection
     {
-        return view('admin.post.show' , compact('post'));
+        $now = Carbon::now();
+
+        $postDateTime= Carbon::create($post->created_at);
+        $diffInDays = $now->diffInDays($postDateTime);
+
+        
+
+
+        return view('admin.post.show' , compact('post', 'diffInDays'));
     }
 
     /**
